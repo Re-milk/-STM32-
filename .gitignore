@@ -1,0 +1,35 @@
+# ---- Keil MDK / ARMCC 构建产物（可重新生成，不入库）----
+Output/
+build/
+List/
+Objects/
+Listings/
+*.o
+*.obj
+*.d
+*.crf
+*.dep
+*.lnp
+*.lst
+*.map
+*.axf
+*.hex
+*.bin
+*.sct
+*.iex
+*.htm
+*.dep
+*.bak
+*.tmp
+
+# ---- Keil 用户私有配置（每台电脑不同）----
+*.uvguix.*
+*.uvopt.bak
+*.scvd.user
+
+# ---- 操作系统 / 编辑器 ----
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

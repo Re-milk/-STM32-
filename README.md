@@ -77,3 +77,39 @@
   - 硬件平台：STM32F103 系列（Cortex-M3）
   - PCB 设计：嘉立创 EDA
   - 调试工具：ST-Link、匿名科创上位机
+
+  ---
+  仓库目录结构
+
+  -STM32-/
+  ├── 无人机FreeRTOS版/          飞控端 Keil 工程（FreeRTOS_FlightCtrl.uvprojx）
+  │   ├── USER/                 main、FreeRTOS 任务调度、系统初始化、全局数据定义
+  │   ├── CONFIG/               外设初始化（GPIO / ADC / TIM / USART1-3 / SPI / 软件 I2C / EEPROM）
+  │   ├── HARDWARE/             mpu6050、spl06 气压计、nrf24l01、光流、LED 驱动
+  │   ├── HAL/                  control 控制输出、remote 遥控解析、ANO_Data_Transfer、WIFI_UFO、ANO_DT
+  │   ├── MATH/                 imu 姿态解算、kalman、filter、pid、myMath
+  │   ├── MAVLINK/              轻量 MAVLink 端口与应用层
+  │   ├── FreeRTOS/             内核源码 + RVDS/ARM_CM3 移植层 + heap_4
+  │   ├── StartUp/              CMSIS、启动文件、stm32f10x_it、中断向量
+  │   └── Lib/                  STM32F10x 标准外设库（inc / src）
+  └── 遥控器freeRTOS版/          遥控器 Keil 工程（ANO_Remoter.uvprojx）
+      ├── ANO_Remoter/          main、摇杆采集（ANO_Stick）、参数（ANO_Param）、上位机协议（ANO_DT）
+      ├── Driver/               板级驱动（ADC / SPI / I2C / UART / Flash / HID / LED / OLED / Key / MPU6050）
+      ├── USB_library/ USB_hid/ STM32 USB 全速设备库 + HID 实现（可作 PC 模拟器手柄）
+      ├── STM32_LIB/            CMSIS + 标准外设库
+      └── FreeRTOS/             内核源码 + Cortex-M3 移植层 + heap_4
+
+  ---
+  编译与烧录
+
+  1. 用 Keil MDK-ARM V5（ARM Compiler V5）分别打开「无人机FreeRTOS版\FreeRTOS_FlightCtrl.uvprojx」与「遥控器freeRTOS版\ANO_Remoter.uvprojx」
+  2. 在 Options for Target 中选择 ST-Link Debugger（SWD），编译后直接下载
+  3. 工程依赖的 STM32F10x 标准外设库与 FreeRTOS 内核均已随仓库提供，无需额外安装
+  4. 构建产物（Output/、build/、List/、*.o、*.crf、*.axf、*.hex、*.map 等）均可重新生成，已由 .gitignore 排除，不入库
+
+  ---
+  说明
+
+  - 仓库只保留源码、工程配置（.uvprojx / .uvoptx）、启动文件与说明文档，不包含编译中间文件
+  - 无线链路参数、通道映射与 PID 参数可在源码对应宏定义中修改
+  - 遥控器端通过 USB HID 可在 PC 上识别为游戏手柄，便于在飞行模拟器中练习
